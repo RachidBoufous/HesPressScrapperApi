@@ -39,8 +39,9 @@ def get_articles(request):
     serializer = serializers.ArticleSerializer(articles, many=True)
     return Response(serializer.data)
 
+
 @api_view(['GET'])
-def get_articles_by_cat(request,cat):
+def get_articles_by_cat(request, cat):
     articles = return_specific_articles(cat)
     serializer = serializers.ArticleSerializer(articles, many=True)
     return Response(serializer.data)
@@ -54,9 +55,9 @@ def return_all_articles():
     options.add_argument("--no-sandbox")
 
     articles_list = []
-    driver = webdriver.Chrome("chromedriver", chrome_options=options)
-    topicsList = ['politics','society','culture','sports','international']
-    
+    driver = webdriver.Chrome("chromedriver.exe", chrome_options=options)
+    topicsList = ['politics', 'society', 'culture', 'sports', 'international']
+
     for topic in topicsList:
 
         topiclink = 'https://en.hespress.com/' + topic
@@ -66,14 +67,13 @@ def return_all_articles():
         # articles = driver.find_elements_by_class_name("stretched-link")
         articles = driver.find_elements_by_class_name("cover")
 
-
         for article in articles:
             p = get_article_object(topic, article)
 
             articles_list.append(p)
-            
 
     return articles_list
+
 
 def get_article_object(topic, article):
     ar = article.find_element_by_class_name("stretched-link")
@@ -81,18 +81,19 @@ def get_article_object(topic, article):
     ardImg = article.find_element_by_class_name("wp-post-image")
 
     p = serializers.Article(
-                title=ar.get_attribute('title'),
-                link=ar.get_attribute('href'),
-                date=ard.get_attribute("innerHTML").split(' '),
-                img=ardImg.get_attribute("src"),
-                a_type=topic
-            )
-    
+        title=ar.get_attribute('title'),
+        link=ar.get_attribute('href'),
+        date=ard.get_attribute("innerHTML").split(' '),
+        img=ardImg.get_attribute("src"),
+        a_type=topic
+    )
+
     return p
+
 
 def return_specific_articles(topic):
     articles_list = []
-    driver = webdriver.Chrome(".\chromedriver")    
+    driver = webdriver.Chrome(".\chromedriver")
     topiclink = 'https://en.hespress.com/' + topic
     driver.get(topiclink)
     driver.execute_script("window.scrollTo(0,180000);")
@@ -103,8 +104,8 @@ def return_specific_articles(topic):
 
     return articles_list
 
+
 def encode_en_date(datelist):
     dateStr = "{0}-{1}-{2}".format(datelist[3], datelist[2], datelist[1])
     date_time_obj = datetime.strptime(dateStr, '%Y-%B-%d')
     return date_time_obj
-
