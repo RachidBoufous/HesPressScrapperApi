@@ -1,2 +1,2 @@
-release: python manage.py runserver
+
 web: gunicorn app:newsScrapperApi.wsgi
