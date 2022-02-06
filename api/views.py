@@ -2,6 +2,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from . import serializers
+import os
 
 
 from selenium import webdriver
@@ -48,16 +49,18 @@ def get_articles_by_cat(request, cat):
 
 
 def return_all_articles():
-    options = webdriver.ChromeOptions()
-    options.add_argument(" - incognito")
-    options.add_argument("--headless")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--no-sandbox")
+    
 
-    articles_list = []
-    driver = webdriver.Chrome(chrome_options=options)
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--no-sandbox")
+    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+
     topicsList = ['politics', 'society', 'culture', 'sports', 'international']
 
+    articles_list = []
     for topic in topicsList:
 
         topiclink = 'https://en.hespress.com/' + topic
