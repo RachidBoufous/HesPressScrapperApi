@@ -1,2 +1,2 @@
 
-web: gunicorn app:newsScrapperApi.wsgi
+web: gunicorn newsScrapperApi.wsgi
