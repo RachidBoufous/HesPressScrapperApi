@@ -55,7 +55,7 @@ def return_all_articles():
     options.add_argument("--no-sandbox")
 
     articles_list = []
-    driver = webdriver.Chrome("chromedriver.exe", chrome_options=options)
+    driver = webdriver.Chrome(chrome_options=options)
     topicsList = ['politics', 'society', 'culture', 'sports', 'international']
 
     for topic in topicsList:
